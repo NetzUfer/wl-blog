@@ -1,0 +1,61 @@
+---
+// Admin dashboard page
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// Check if user is logged in (this would be implemented with a proper auth system)
+const isLoggedIn = false; // Replace with actual auth check
+
+// Redirect to login if not authenticated
+if (!isLoggedIn) {
+  return Astro.redirect('/admin/login');
+}
+---
+
+<MainLayout title="Admin Dashboard">
+  <div class="container py-12">
+    <h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div class="card p-6">
+        <h3 class="text-xl font-bold mb-2">Beitru00e4ge</h3>
+        <p class="text-3xl font-bold text-teal-600">0</p>
+        <a href="/admin/posts" class="text-teal-600 hover:underline mt-4 inline-block">
+          Verwalten <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+      
+      <div class="card p-6">
+        <h3 class="text-xl font-bold mb-2">Kategorien</h3>
+        <p class="text-3xl font-bold text-teal-600">5</p>
+        <a href="/admin/categories" class="text-teal-600 hover:underline mt-4 inline-block">
+          Verwalten <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+      
+      <div class="card p-6">
+        <h3 class="text-xl font-bold mb-2">Kommentare</h3>
+        <p class="text-3xl font-bold text-teal-600">0</p>
+        <a href="/admin/comments" class="text-teal-600 hover:underline mt-4 inline-block">
+          Verwalten <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="flex gap-4 mb-8">
+      <a href="/admin/posts/new" class="btn-primary">
+        <i class="fas fa-plus mr-2"></i>
+        Neuer Beitrag
+      </a>
+      
+      <a href="/admin/categories/new" class="btn-secondary">
+        <i class="fas fa-plus mr-2"></i>
+        Neue Kategorie
+      </a>
+    </div>
+    
+    <div class="card p-6">
+      <h2 class="text-xl font-bold mb-4">Letzte Aktivitu00e4ten</h2>
+      <p class="text-gray-600">Keine Aktivitu00e4ten vorhanden.</p>
+    </div>
+  </div>
+</MainLayout>

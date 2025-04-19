@@ -1,0 +1,97 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { executeQuery } from '../backend/db.js';
+
+// Suchanfrage aus der URL holen
+const query = Astro.url.searchParams.get('q') || '';
+
+// Suche in der Datenbank durchführen
+let searchResults = [];
+if (query && query.length >= 3) {
+  searchResults = await executeQuery(async (connection) => {
+    const [results] = await connection.execute(`
+      SELECT p.*, c.name as category_name, c.slug as category_slug, u.name as author_name
+      FROM posts p
+      LEFT JOIN categories c ON p.category_id = c.id
+      LEFT JOIN users u ON p.author_id = u.id
+      WHERE p.status = 'published' AND (
+        p.title LIKE ? OR
+        p.content LIKE ? OR
+        p.excerpt LIKE ? OR
+        c.name LIKE ?
+      )
+      ORDER BY p.created_at DESC
+      LIMIT 20
+    `, [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`]);
+    
+    return results;
+  });
+}
+---
+
+<MainLayout title="Suchergebnisse - LifestyleBlog">
+  <section class="py-16">
+    <div class="container max-w-4xl">
+      <h1 class="text-4xl font-bold text-center mb-8">Suchergebnisse</h1>
+      
+      <!-- Search Form -->
+      <div class="mb-12">
+        <form action="/search" method="GET" class="flex gap-2">
+          <input 
+            type="text" 
+            name="q" 
+            value={query}
+            placeholder="Wonach suchst du?" 
+            class="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            minlength="3"
+            required
+          />
+          <button type="submit" class="btn-primary whitespace-nowrap">
+            <i class="fas fa-search mr-2"></i>
+            Suchen
+          </button>
+        </form>
+      </div>
+      
+      <!-- Search Results -->
+      {query ? (
+        <div>
+          {query.length < 3 ? (
+            <p class="mb-8 text-gray-600 text-center">
+              Bitte gib mindestens 3 Zeichen ein.
+            </p>
+          ) : (
+            <p class="mb-8 text-gray-600">
+              {searchResults.length === 0 
+                ? `Keine Ergebnisse gefunden für "${query}".` 
+                : `${searchResults.length} Ergebnis${searchResults.length === 1 ? '' : 'se'} gefunden für "${query}".`
+              }
+            </p>
+          )}
+          
+          {searchResults.length > 0 && (
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {searchResults.map(post => (
+                <PostCard
+                  title={post.title}
+                  slug={post.slug}
+                  excerpt={post.excerpt}
+                  image={post.image}
+                  category={post.category_name}
+                  categorySlug={post.category_slug}
+                  date={post.created_at}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-gray-600 mb-4">Gib einen Suchbegriff ein, um Beiträge zu finden.</p>
+          <i class="fas fa-search text-5xl text-gray-300"></i>
+        </div>
+      )}
+    </div>
+  </section>
+</MainLayout>

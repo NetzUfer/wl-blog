@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  icon?: string;
+  image?: string;
+  link: string;
+}
+
+const { title, description, icon, image, link } = Astro.props;
+---
+
+<a href={link} class="card hover:shadow-lg transition-shadow overflow-hidden flex flex-col h-full">
+  {image && (
+    <div class="aspect-video overflow-hidden">
+      <img 
+        src={image} 
+        alt={title} 
+        class="w-full h-full object-cover transition-transform hover:scale-105"
+      />
+    </div>
+  )}
+  
+  <div class="p-6 flex-grow">
+    <div class="flex items-center mb-4">
+      {icon && <i class={`fas ${icon} text-teal-600 text-2xl mr-3`}></i>}
+      <h3 class="text-xl font-bold">{title}</h3>
+    </div>
+    
+    {description && <p class="text-gray-600">{description}</p>}
+  </div>
+</a>

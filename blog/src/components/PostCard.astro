@@ -1,0 +1,55 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  image?: string;
+  category?: string;
+  categorySlug?: string;
+  date: Date | string;
+}
+
+const { title, slug, excerpt, image, category, categorySlug, date } = Astro.props;
+
+// Format date
+const formattedDate = new Date(date).toLocaleDateString('de-DE', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<article class="card h-full flex flex-col">
+  {image && (
+    <div class="aspect-video overflow-hidden">
+      <img 
+        src={image} 
+        alt={title} 
+        class="w-full h-full object-cover transition-transform hover:scale-105"
+      />
+    </div>
+  )}
+  
+  <div class="p-6 flex-grow flex flex-col">
+    {category && (
+      <a 
+        href={`/blog/category/${categorySlug}`} 
+        class="text-sm text-teal-600 font-medium mb-2 hover:underline"
+      >
+        {category}
+      </a>
+    )}
+    
+    <h2 class="text-xl font-bold mb-3">
+      <a href={`/blog/${slug}`} class="hover:text-teal-600 transition-colors">
+        {title}
+      </a>
+    </h2>
+    
+    {excerpt && <p class="text-gray-600 mb-4">{excerpt}</p>}
+    
+    <div class="text-sm text-gray-500 mt-auto">
+      {formattedDate}
+    </div>
+  </div>
+</article>

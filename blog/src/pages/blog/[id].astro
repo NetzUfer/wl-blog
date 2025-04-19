@@ -1,0 +1,364 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// In einer echten Anwendung wu00fcrden diese Daten aus der Datenbank kommen
+const blogPosts = [
+  {
+    id: 1,
+    title: 'Gesunde Ernu00e4hrung leicht gemacht',
+    content: `
+      <p>Eine ausgewogene Ernu00e4hrung ist der Schlu00fcssel zu einem gesunden Leben. Doch was bedeutet das eigentlich? In diesem Artikel teile ich meine besten Tipps, wie du deine Ernu00e4hrung ohne komplizierte Diu00e4ten umstellen kannst.</p>
+      
+      <h2>Warum ist gesunde Ernu00e4hrung wichtig?</h2>
+      
+      <p>Unsere Ernu00e4hrung beeinflusst nicht nur unser Ku00f6rpergewicht, sondern auch unsere Energie, Stimmung und langfristige Gesundheit. Eine ausgewogene Ernu00e4hrung versorgt den Ku00f6rper mit allen wichtigen Nu00e4hrstoffen, die er braucht, um optimal zu funktionieren.</p>
+      
+      <p>Hier sind einige Vorteile einer gesunden Ernu00e4hrung:</p>
+      
+      <ul>
+        <li>Mehr Energie im Alltag</li>
+        <li>Bessere Konzentration und Gedächtnis</li>
+        <li>Stärkeres Immunsystem</li>
+        <li>Gesundes Körpergewicht</li>
+        <li>Reduziertes Risiko für chronische Krankheiten</li>
+      </ul>
+      
+      <h2>Meine Top 5 Tipps für eine gesündere Ernährung</h2>
+      
+      <h3>1. Mehr Gemüse und Obst</h3>
+      
+      <p>Versuche, bei jeder Mahlzeit Gemüse oder Obst zu integrieren. Sie liefern wichtige Vitamine, Mineralstoffe und Ballaststoffe. Ziel sollten 5 Portionen am Tag sein.</p>
+      
+      <h3>2. Vollkornprodukte bevorzugen</h3>
+      
+      <p>Tausche Weißmehlprodukte gegen Vollkornvarianten aus. Sie halten länger satt und enthalten mehr Nährstoffe.</p>
+      
+      <h3>3. Proteinquellen variieren</h3>
+      
+      <p>Achte auf eine gute Mischung aus pflanzlichen und tierischen Proteinen. Hülsenfrüchte, Nüsse, Tofu, Fisch, Eier und mageres Fleisch sind gute Optionen.</p>
+      
+      <h3>4. Gesunde Fette nicht vergessen</h3>
+      
+      <p>Nicht alle Fette sind schlecht! Avocados, Nüsse, Samen und Olivenöl liefern gesunde ungesättigte Fettsäuren, die wichtig für Gehirn und Herz sind.</p>
+      
+      <h3>5. Ausreichend Wasser trinken</h3>
+      
+      <p>Oft verwechseln wir Durst mit Hunger. Trinke über den Tag verteilt 1,5-2 Liter Wasser, um hydratisiert zu bleiben.</p>
+    `,
+    image: '/images/blog/healthy-food.jpg',
+    category: 'Ernu00e4hrung',
+    date: '15. April 2023',
+    author: 'Sarah',
+    relatedPosts: [2, 6]
+  },
+  {
+    id: 2,
+    title: 'Mein Weg zum Wunschgewicht',
+    content: `
+      <p>In diesem sehr persönlichen Beitrag teile ich meine Reise, wie ich 15 Kilo abgenommen habe, ohne strenge Diäten zu halten oder mich im Fitnessstudio zu quälen.</p>
+      
+      <h2>Mein Ausgangspunkt</h2>
+      
+      <p>Vor zwei Jahren war ich an einem Punkt angelangt, an dem ich mich in meinem Körper nicht mehr wohlfühlte. Treppen steigen fiel mir schwer, ich hatte wenig Energie und meine Kleidung passte nicht mehr. Ich wusste, dass ich etwas ändern musste – aber nachhaltig und ohne Crash-Diät.</p>
+      
+      <h2>Was nicht funktioniert hat</h2>
+      
+      <p>Zunächst probierte ich verschiedene Trend-Diäten aus, die alle das gleiche Muster zeigten: kurzfristiger Erfolg, gefolgt von Frust und dem berüchtigten Jo-Jo-Effekt. Ich erkannte, dass ich meinen gesamten Lebensstil ändern musste, nicht nur vorübergehend meine Ernährung.</p>
+      
+      <h2>Mein nachhaltiger Ansatz</h2>
+      
+      <h3>1. Kleine, dauerhafte Änderungen</h3>
+      
+      <p>Statt radikaler Umstellungen begann ich mit kleinen Schritten: mehr Wasser trinken, Portionsgrößen reduzieren und bewusster essen.</p>
+      
+      <h3>2. Bewegung, die Spaß macht</h3>
+      
+      <p>Ich suchte mir Aktivitäten, die ich wirklich genoss – in meinem Fall waren das Tanzen und Wandern. So wurde Bewegung zum Vergnügen statt zur Pflicht.</p>
+      
+      <h3>3. Achtsames Essen</h3>
+      
+      <p>Ich lernte, auf meine Hunger- und Sättigungssignale zu hören und langsamer zu essen. Das half mir, weniger zu essen und mehr zu genießen.</p>
+      
+      <h2>Meine Ergebnisse</h2>
+      
+      <p>Nach einem Jahr hatte ich 15 Kilo verloren – langsam, aber stetig. Wichtiger noch: Ich habe mein Gewicht seit einem Jahr gehalten, weil die Änderungen zu Gewohnheiten wurden, die ich gerne beibehalte.</p>
+      
+      <p>Der größte Gewinn war nicht das niedrigere Gewicht, sondern mehr Energie, besserer Schlaf und ein neues Selbstbewusstsein.</p>
+    `,
+    image: '/images/blog/weight-loss.jpg',
+    category: 'Abnehmen',
+    date: '2. Mai 2023',
+    author: 'Sarah',
+    relatedPosts: [1, 3]
+  },
+  {
+    id: 3,
+    title: 'Yoga fu00fcr Anfu00e4nger',
+    content: `
+      <p>Yoga ist mehr als nur körperliche Übungen – es ist eine ganzheitliche Praxis für Körper und Geist. Hier findest du einen einfachen Einstieg in die Welt des Yoga.</p>
+      
+      <h2>Warum Yoga?</h2>
+      
+      <p>Yoga bietet zahlreiche Vorteile:</p>
+      
+      <ul>
+        <li>Verbessert Flexibilität und Kraft</li>
+        <li>Reduziert Stress und Angstzustände</li>
+        <li>Fördert besseren Schlaf</li>
+        <li>Steigert das Körperbewusstsein</li>
+        <li>Kann bei Rückenschmerzen helfen</li>
+      </ul>
+      
+      <h2>Was du brauchst</h2>
+      
+      <p>Für den Einstieg benötigst du nicht viel:</p>
+      
+      <ul>
+        <li>Eine Yogamatte (für besseren Halt)</li>
+        <li>Bequeme, dehnbare Kleidung</li>
+        <li>Etwas Platz zum Bewegen</li>
+        <li>10-15 Minuten Zeit</li>
+      </ul>
+      
+      <h2>5 einfache Yoga-Übungen für den Morgen</h2>
+      
+      <h3>1. Berghaltung (Tadasana)</h3>
+      
+      <p>Stehe aufrecht, Füße hüftbreit auseinander, Arme seitlich am Körper. Verlagere dein Gewicht gleichmäßig auf beide Füße und atme tief ein und aus. Diese einfache Haltung verbessert deine Körperhaltung und Konzentration.</p>
+      
+      <h3>2. Vorwärtsbeuge (Uttanasana)</h3>
+      
+      <p>Aus der Berghaltung beuge dich langsam nach vorne, lasse den Oberkörper und die Arme locker hängen. Beuge die Knie leicht, wenn nötig. Diese Haltung dehnt die Rückseite der Beine und entspannt den Rücken.</p>
+      
+      <h3>3. Herabschauender Hund (Adho Mukha Svanasana)</h3>
+      
+      <p>Komme in eine umgekehrte V-Position, Hände und Füße auf dem Boden, Gesäß nach oben gerichtet. Diese Haltung stärkt Arme und Schultern und dehnt den gesamten Rücken.</p>
+      
+      <h3>4. Kobra (Bhujangasana)</h3>
+      
+      <p>Lege dich auf den Bauch, Hände neben der Brust. Drücke die Hände in den Boden und hebe Brust und Kopf an. Diese Haltung öffnet die Brust und stärkt den Rücken.</p>
+      
+      <h3>5. Kindhaltung (Balasana)</h3>
+      
+      <p>Knie dich hin, setze dich auf die Fersen und beuge dich nach vorne, bis die Stirn den Boden berührt. Arme nach vorne ausstrecken oder seitlich am Körper ablegen. Diese Haltung ist wunderbar entspannend und beruhigend.</p>
+    `,
+    image: '/images/blog/yoga.jpg',
+    category: 'Bewegung',
+    date: '10. Juni 2023',
+    author: 'Sarah',
+    relatedPosts: [2, 5]
+  }
+];
+
+export function getStaticPaths() {
+  return blogPosts.map(post => ({
+    params: { id: post.id.toString() },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const relatedPostsData = post.relatedPosts
+  .map(id => blogPosts.find(p => p.id === id))
+  .filter(Boolean);
+---
+
+<MainLayout title={`${post.title} - LifestyleBlog`}>
+  <article class="py-16">
+    <div class="container max-w-4xl">
+      <!-- Header -->
+      <div class="mb-8 text-center">
+        <span class="inline-block bg-primary text-white text-sm px-3 py-1 rounded-full mb-4">
+          {post.category}
+        </span>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
+        <div class="flex items-center justify-center gap-4 text-gray-600">
+          <span class="flex items-center gap-1">
+            <i class="fas fa-user"></i>
+            {post.author}
+          </span>
+          <span class="flex items-center gap-1">
+            <i class="fas fa-calendar"></i>
+            {post.date}
+          </span>
+        </div>
+      </div>
+      
+      <!-- Featured Image -->
+      <div class="rounded-lg overflow-hidden mb-8">
+        <img 
+          src={post.image} 
+          alt={post.title} 
+          class="w-full h-auto object-cover"
+        />
+      </div>
+      
+      <!-- Content -->
+      <div class="prose prose-lg max-w-none">
+        <div set:html={post.content} />
+      </div>
+      
+      <!-- Tags -->
+      <div class="mt-8 flex flex-wrap gap-2">
+        <span class="text-sm font-medium">Tags:</span>
+        <a href="#" class="text-sm bg-secondary px-3 py-1 rounded-full hover:bg-primary hover:text-white transition-colors">
+          Gesundheit
+        </a>
+        <a href="#" class="text-sm bg-secondary px-3 py-1 rounded-full hover:bg-primary hover:text-white transition-colors">
+          {post.category}
+        </a>
+        <a href="#" class="text-sm bg-secondary px-3 py-1 rounded-full hover:bg-primary hover:text-white transition-colors">
+          Lifestyle
+        </a>
+      </div>
+      
+      <!-- Author Bio -->
+      <div class="mt-12 bg-secondary/30 p-6 rounded-lg flex flex-col md:flex-row gap-6 items-center">
+        <img 
+          src="/images/author.jpg" 
+          alt={post.author} 
+          class="w-24 h-24 rounded-full object-cover"
+        />
+        <div>
+          <h3 class="text-xl font-bold mb-2">u00dcber {post.author}</h3>
+          <p class="text-gray-600 mb-4">
+            Sarah ist Gesundheitscoach und Bloggerin mit einer Leidenschaft fu00fcr ganzheitliches Wohlbefinden. Nach ihrer eigenen Transformationsreise teilt sie ihr Wissen und ihre Erfahrungen, um anderen zu helfen, ein gesu00fcnderes und glu00fccklicheres Leben zu fu00fchren.
+          </p>
+          <div class="flex gap-4">
+            <a href="#" class="text-gray-600 hover:text-accent"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-600 hover:text-accent"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-gray-600 hover:text-accent"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  <!-- Related Posts -->
+  <section class="py-16 bg-secondary/30">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-12">Das ku00f6nnte dich auch interessieren</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {relatedPostsData.map(relatedPost => (
+          <a href={`/blog/${relatedPost.id}`} class="card h-full flex flex-col">
+            <div class="relative h-48 overflow-hidden">
+              <img 
+                src={relatedPost.image} 
+                alt={relatedPost.title} 
+                class="w-full h-full object-cover"
+              />
+              <span class="absolute top-2 right-2 bg-primary text-white text-xs px-2 py-1 rounded-full">
+                {relatedPost.category}
+              </span>
+            </div>
+            <div class="p-4 flex-grow flex flex-col">
+              <time datetime={relatedPost.date} class="text-sm text-gray-500 mb-2">{relatedPost.date}</time>
+              <h3 class="text-xl font-bold mb-2">{relatedPost.title}</h3>
+              <div class="mt-auto pt-4">
+                <span class="text-accent font-medium hover:underline">
+                  Weiterlesen
+                  <i class="fas fa-arrow-right ml-1"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Comment Section -->
+  <section class="py-16">
+    <div class="container max-w-4xl">
+      <h2 class="text-3xl font-bold text-center mb-8">Kommentare</h2>
+      
+      <!-- Comment Form -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h3 class="text-xl font-bold mb-4">Hinterlasse einen Kommentar</h3>
+        <form class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input type="text" id="name" name="name" required class="input" />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-Mail</label>
+              <input type="email" id="email" name="email" required class="input" />
+            </div>
+          </div>
+          <div>
+            <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Kommentar</label>
+            <textarea id="comment" name="comment" rows="4" required class="input"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-paper-plane mr-2"></i>
+            Kommentar senden
+          </button>
+        </form>
+      </div>
+      
+      <!-- Comments List -->
+      <div class="space-y-6">
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <div class="flex items-start gap-4">
+            <img 
+              src="/images/user1.jpg" 
+              alt="User" 
+              class="w-12 h-12 rounded-full object-cover"
+            />
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h4 class="font-bold">Lisa Mu00fcller</h4>
+                <span class="text-sm text-gray-500">12. Juni 2023</span>
+              </div>
+              <p class="text-gray-600">
+                Vielen Dank fu00fcr diesen hilfreichen Artikel! Ich habe die Tipps direkt ausprobiert und fu00fchle mich schon viel besser. Besonders der Tipp mit dem Wasser trinken hat bei mir Wunder gewirkt.
+              </p>
+              <button class="text-sm text-accent mt-2 hover:underline">Antworten</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm p-6 ml-12">
+          <div class="flex items-start gap-4">
+            <img 
+              src="/images/author.jpg" 
+              alt="Author" 
+              class="w-12 h-12 rounded-full object-cover"
+            />
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h4 class="font-bold">{post.author}</h4>
+                <span class="text-sm text-gray-500">12. Juni 2023</span>
+              </div>
+              <p class="text-gray-600">
+                Danke fu00fcr dein Feedback, Lisa! Es freut mich sehr, dass die Tipps dir geholfen haben. Bleib dran und lass mich wissen, wie es weitergeht!
+              </p>
+              <button class="text-sm text-accent mt-2 hover:underline">Antworten</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <div class="flex items-start gap-4">
+            <img 
+              src="/images/user2.jpg" 
+              alt="User" 
+              class="w-12 h-12 rounded-full object-cover"
+            />
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h4 class="font-bold">Thomas Schmidt</h4>
+                <span class="text-sm text-gray-500">14. Juni 2023</span>
+              </div>
+              <p class="text-gray-600">
+                Ich habe schon viele Artikel zum Thema gelesen, aber dieser ist wirklich besonders gut strukturiert und verstu00e4ndlich. Hast du vielleicht auch Tipps speziell fu00fcr Menschen, die im Bu00fcro arbeiten?
+              </p>
+              <button class="text-sm text-accent mt-2 hover:underline">Antworten</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

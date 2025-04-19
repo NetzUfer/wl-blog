@@ -1,0 +1,261 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// In einer echten Anwendung wu00fcrden diese Daten aus der Datenbank kommen
+const blogPosts = [
+  {
+    id: 1,
+    title: 'Gesunde Ernu00e4hrung leicht gemacht',
+    category: 'Ernu00e4hrung',
+    date: '15. April 2023',
+    status: 'Veru00f6ffentlicht'
+  },
+  {
+    id: 2,
+    title: 'Mein Weg zum Wunschgewicht',
+    category: 'Abnehmen',
+    date: '2. Mai 2023',
+    status: 'Veru00f6ffentlicht'
+  },
+  {
+    id: 3,
+    title: 'Yoga fu00fcr Anfu00e4nger',
+    category: 'Bewegung',
+    date: '10. Juni 2023',
+    status: 'Veru00f6ffentlicht'
+  },
+  {
+    id: 4,
+    title: 'Sommer-Rezepte fu00fcr heiu00dfe Tage',
+    category: 'Ernu00e4hrung',
+    date: '20. Juni 2023',
+    status: 'Entwurf'
+  }
+];
+
+const categories = [
+  { id: 1, name: 'Ernu00e4hrung', count: 2 },
+  { id: 2, name: 'Abnehmen', count: 1 },
+  { id: 3, name: 'Bewegung', count: 1 },
+  { id: 4, name: 'Bu00fccher', count: 0 },
+  { id: 5, name: 'Filme', count: 0 }
+];
+
+const comments = [
+  {
+    id: 1,
+    author: 'Lisa Mu00fcller',
+    content: 'Vielen Dank fu00fcr diesen hilfreichen Artikel!',
+    date: '12. Juni 2023',
+    status: 'Genehmigt',
+    postId: 1
+  },
+  {
+    id: 2,
+    author: 'Thomas Schmidt',
+    content: 'Ich habe schon viele Artikel zum Thema gelesen, aber dieser ist wirklich besonders gut strukturiert.',
+    date: '14. Juni 2023',
+    status: 'Genehmigt',
+    postId: 1
+  },
+  {
+    id: 3,
+    author: 'Max Mustermann',
+    content: 'Kannst du auch etwas u00fcber vegane Ernu00e4hrung schreiben?',
+    date: '18. Juni 2023',
+    status: 'Ausstehend',
+    postId: 2
+  }
+];
+
+const subscribers = 156;
+const totalPosts = blogPosts.length;
+const totalComments = comments.length;
+---
+
+<MainLayout title="Admin-Dashboard - LifestyleBlog">
+  <div class="bg-gray-100 min-h-screen">
+    <div class="container py-8">
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar -->
+        <aside class="w-full md:w-64 bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold mb-6">Dashboard</h2>
+          <nav class="space-y-2">
+            <a href="/admin/dashboard" class="flex items-center gap-2 p-2 bg-primary/10 text-primary rounded-md">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>u00dcbersicht</span>
+            </a>
+            <a href="/admin/posts" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md">
+              <i class="fas fa-file-alt"></i>
+              <span>Beitru00e4ge</span>
+            </a>
+            <a href="/admin/categories" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md">
+              <i class="fas fa-folder"></i>
+              <span>Kategorien</span>
+            </a>
+            <a href="/admin/comments" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md">
+              <i class="fas fa-comments"></i>
+              <span>Kommentare</span>
+            </a>
+            <a href="/admin/subscribers" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md">
+              <i class="fas fa-envelope"></i>
+              <span>Newsletter</span>
+            </a>
+            <a href="/admin/settings" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md">
+              <i class="fas fa-cog"></i>
+              <span>Einstellungen</span>
+            </a>
+          </nav>
+          <div class="mt-8 pt-4 border-t">
+            <a href="/" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md">
+              <i class="fas fa-eye"></i>
+              <span>Blog ansehen</span>
+            </a>
+            <a href="/admin/logout" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md text-red-500">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Abmelden</span>
+            </a>
+          </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="flex-1">
+          <h1 class="text-2xl font-bold mb-6">u00dcbersicht</h1>
+          
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">Beitru00e4ge</p>
+                  <p class="text-3xl font-bold">{totalPosts}</p>
+                </div>
+                <div class="text-3xl text-primary">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">Kategorien</p>
+                  <p class="text-3xl font-bold">{categories.length}</p>
+                </div>
+                <div class="text-3xl text-primary">
+                  <i class="fas fa-folder"></i>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">Kommentare</p>
+                  <p class="text-3xl font-bold">{totalComments}</p>
+                </div>
+                <div class="text-3xl text-primary">
+                  <i class="fas fa-comments"></i>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">Abonnenten</p>
+                  <p class="text-3xl font-bold">{subscribers}</p>
+                </div>
+                <div class="text-3xl text-primary">
+                  <i class="fas fa-envelope"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recent Posts -->
+          <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-xl font-bold">Neueste Beitru00e4ge</h2>
+              <a href="/admin/posts/new" class="btn-primary text-sm">
+                <i class="fas fa-plus mr-1"></i>
+                Neuer Beitrag
+              </a>
+            </div>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="border-b">
+                    <th class="py-2 px-4 text-left">Titel</th>
+                    <th class="py-2 px-4 text-left">Kategorie</th>
+                    <th class="py-2 px-4 text-left">Datum</th>
+                    <th class="py-2 px-4 text-left">Status</th>
+                    <th class="py-2 px-4 text-left">Aktionen</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {blogPosts.map(post => (
+                    <tr class="border-b hover:bg-gray-50">
+                      <td class="py-2 px-4">{post.title}</td>
+                      <td class="py-2 px-4">{post.category}</td>
+                      <td class="py-2 px-4">{post.date}</td>
+                      <td class="py-2 px-4">
+                        <span class={`px-2 py-1 rounded-full text-xs ${post.status === 'Veru00f6ffentlicht' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                          {post.status}
+                        </span>
+                      </td>
+                      <td class="py-2 px-4">
+                        <div class="flex gap-2">
+                          <a href={`/admin/posts/edit/${post.id}`} class="text-blue-500 hover:text-blue-700">
+                            <i class="fas fa-edit"></i>
+                          </a>
+                          <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Recent Comments -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-xl font-bold">Neueste Kommentare</h2>
+              <a href="/admin/comments" class="text-primary hover:underline text-sm">Alle anzeigen</a>
+            </div>
+            
+            <div class="space-y-4">
+              {comments.map(comment => (
+                <div class="border-b pb-4">
+                  <div class="flex justify-between mb-2">
+                    <div class="font-medium">{comment.author}</div>
+                    <div class="text-sm text-gray-500">{comment.date}</div>
+                  </div>
+                  <p class="text-gray-600 mb-2">{comment.content}</p>
+                  <div class="flex justify-between items-center">
+                    <a href={`/blog/${comment.postId}`} class="text-sm text-primary hover:underline">Zum Beitrag</a>
+                    <div class="flex gap-2">
+                      {comment.status === 'Ausstehend' && (
+                        <button class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full hover:bg-green-200">
+                          Genehmigen
+                        </button>
+                      )}
+                      <button class="text-xs px-2 py-1 bg-red-100 text-red-800 rounded-full hover:bg-red-200">
+                        Lu00f6schen
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</MainLayout>

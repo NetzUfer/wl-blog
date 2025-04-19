@@ -1,0 +1,136 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import BlogPostCard from '../components/BlogPostCard.astro';
+
+// In einer echten Anwendung wu00fcrden diese Daten aus der Datenbank kommen
+const featuredPosts = [
+  {
+    id: 1,
+    title: 'Gesunde Ernu00e4hrung leicht gemacht',
+    excerpt: 'Entdecke einfache Tipps fu00fcr eine ausgewogene Ernu00e4hrung im Alltag.',
+    image: '/images/blog/healthy-food.jpg',
+    category: 'Ernu00e4hrung',
+    date: '15. April 2023'
+  },
+  {
+    id: 2,
+    title: 'Mein Weg zum Wunschgewicht',
+    excerpt: 'Wie ich 15 Kilo verloren habe und dabei glu00fccklich geblieben bin.',
+    image: '/images/blog/weight-loss.jpg',
+    category: 'Abnehmen',
+    date: '2. Mai 2023'
+  },
+  {
+    id: 3,
+    title: 'Yoga fu00fcr Anfu00e4nger',
+    excerpt: 'Die besten u00dcbungen fu00fcr einen entspannten Start in den Tag.',
+    image: '/images/blog/yoga.jpg',
+    category: 'Bewegung',
+    date: '10. Juni 2023'
+  }
+];
+
+const categories = [
+  {
+    title: 'u00dcber mich',
+    description: 'Erfahre mehr u00fcber meine Geschichte und meinen Weg zu einem gesu00fcnderen Leben.',
+    icon: 'fa-user',
+    image: '/images/categories/about-me.jpg',
+    link: '/ueber-mich'
+  },
+  {
+    title: 'Abnehmen',
+    description: 'Tipps und Tricks fu00fcr eine nachhaltige Gewichtsreduktion ohne Verzicht.',
+    icon: 'fa-weight-scale',
+    image: '/images/categories/weight-loss.jpg',
+    link: '/abnehmen'
+  },
+  {
+    title: 'Bewegung',
+    description: 'Workouts und u00dcbungen fu00fcr mehr Fitness und Wohlbefinden im Alltag.',
+    icon: 'fa-person-running',
+    image: '/images/categories/exercise.jpg',
+    link: '/bewegung'
+  },
+  {
+    title: 'Bu00fccher',
+    description: 'Meine Buchempfehlungen zu Gesundheit, Ernu00e4hrung und persu00f6nlichem Wachstum.',
+    icon: 'fa-book',
+    image: '/images/categories/books.jpg',
+    link: '/buecher'
+  },
+  {
+    title: 'Filme',
+    description: 'Inspirierende Filme und Dokumentationen fu00fcr mehr Motivation.',
+    icon: 'fa-film',
+    image: '/images/categories/movies.jpg',
+    link: '/filme'
+  }
+];
+---
+
+<MainLayout title="LifestyleBlog - Gesund leben, glu00fccklich sein">
+  <!-- Hero Section -->
+  <Hero
+    title="Gesund leben, glu00fccklich sein"
+    subtitle="Entdecke Tipps und Inspiration fu00fcr einen ausgewogenen Lebensstil, der dich glu00fccklich macht."
+    image="/images/hero-background.jpg"
+    primaryButtonText="Jetzt starten"
+    primaryButtonLink="/blog"
+    secondaryButtonText="Gesunde Rezepte"
+    secondaryButtonLink="/rezepte"
+  />
+  
+  <!-- Categories Section -->
+  <section class="py-16">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-12">Entdecke meine Themen</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {categories.map(category => (
+          <CategoryCard {...category} />
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Featured Posts Section -->
+  <section class="py-16 bg-secondary/30">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-center mb-12">Aktuelle Beitru00e4ge</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredPosts.map(post => (
+          <BlogPostCard {...post} />
+        ))}
+      </div>
+      <div class="text-center mt-12">
+        <a href="/blog" class="btn-primary">
+          Alle Beitru00e4ge ansehen
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Newsletter Section -->
+  <section class="py-16">
+    <div class="container max-w-4xl bg-primary/10 rounded-lg p-8 text-center">
+      <h2 class="text-3xl font-bold mb-4">Bleib auf dem Laufenden</h2>
+      <p class="text-lg mb-6">Abonniere meinen Newsletter und erhalte regelmu00e4u00dfig neue Tipps, Rezepte und Inspiration.</p>
+      <form action="/api/newsletter" method="POST" class="flex flex-col md:flex-row gap-4 max-w-xl mx-auto">
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="Deine E-Mail-Adresse" 
+          required
+          class="input flex-grow"
+        />
+        <button type="submit" class="btn-primary whitespace-nowrap">
+          <i class="fas fa-paper-plane mr-2"></i>
+          Abonnieren
+        </button>
+      </form>
+    </div>
+  </section>
+</MainLayout>
