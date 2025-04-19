@@ -1,0 +1,11 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import ErrorDisplay from '../components/errors/ErrorDisplay.astro';
+---
+
+<MainLayout title="Seite nicht gefunden">
+  <ErrorDisplay 
+    title="Seite nicht gefunden" 
+    message="Die angeforderte Seite existiert leider nicht. Bitte u00fcberpru00fcfen Sie die URL oder kehren Sie zur Startseite zuru00fcck." 
+  />
+</MainLayout>

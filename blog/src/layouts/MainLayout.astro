@@ -4,9 +4,14 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  hasError?: boolean;
 }
 
-const { title, description = 'Ein Lifestyle-Blog über gesunde Ernährung und Wohlbefinden' } = Astro.props;
+const { 
+  title, 
+  description = 'Ein Lifestyle-Blog über gesunde Ernährung und Wohlbefinden',
+  hasError = false
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -18,6 +23,12 @@ const { title, description = 'Ein Lifestyle-Blog über gesunde Ernährung und Wo
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+      // Simple client-side error handling
+      window.addEventListener('error', function(e) {
+        console.error('Page error:', e.message);
+      });
+    </script>
   </head>
   <body class="min-h-screen bg-gray-50 flex flex-col">
     <header class="bg-white shadow-sm">

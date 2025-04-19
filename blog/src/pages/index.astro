@@ -3,9 +3,25 @@ import MainLayout from '../layouts/MainLayout.astro';
 import Hero from '../components/Hero.astro';
 import CategoryCard from '../components/CategoryCard.astro';
 import BlogPostCard from '../components/BlogPostCard.astro';
+import DatabaseFallback from '../components/DatabaseFallback.astro';
+import { getCategories, getPosts } from '../backend/db.js';
 
-// In einer echten Anwendung wu00fcrden diese Daten aus der Datenbank kommen
-const featuredPosts = [
+// Versuche, Daten aus der Datenbank zu laden
+let dbCategories = [];
+let dbPosts = [];
+let dbError = false;
+
+try {
+  // Versuche, Kategorien und Beitru00e4ge aus der Datenbank zu laden
+  dbCategories = await getCategories();
+  dbPosts = await getPosts({ limit: 3 });
+} catch (error) {
+  console.error('Fehler beim Laden der Daten:', error);
+  dbError = true;
+}
+
+// Fallback-Daten, falls die Datenbank nicht verfu00fcgbar ist
+const fallbackPosts = [
   {
     id: 1,
     title: 'Gesunde Ernu00e4hrung leicht gemacht',
@@ -32,7 +48,7 @@ const featuredPosts = [
   }
 ];
 
-const categories = [
+const fallbackCategories = [
   {
     title: 'u00dcber mich',
     description: 'Erfahre mehr u00fcber meine Geschichte und meinen Weg zu einem gesu00fcnderen Leben.',
@@ -69,6 +85,25 @@ const categories = [
     link: '/filme'
   }
 ];
+
+// Verwende entweder die Datenbank-Daten oder die Fallback-Daten
+const categories = dbError || dbCategories.length === 0 ? fallbackCategories : dbCategories.map(cat => ({
+  title: cat.name,
+  description: cat.description,
+  icon: cat.icon || 'fa-folder',
+  image: `/images/categories/${cat.slug}.jpg`,
+  link: `/blog/category/${cat.slug}`
+}));
+
+const featuredPosts = dbError || dbPosts.length === 0 ? fallbackPosts : dbPosts.map(post => ({
+  id: post.id,
+  title: post.title,
+  excerpt: post.excerpt,
+  image: post.image || '/images/blog/default.jpg',
+  category: post.category_name,
+  date: new Date(post.created_at).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }),
+  slug: post.slug
+}));
 ---
 
 <MainLayout title="LifestyleBlog - Gesund leben, glu00fccklich sein">
@@ -82,6 +117,8 @@ const categories = [
     secondaryButtonText="Gesunde Rezepte"
     secondaryButtonLink="/rezepte"
   />
+  
+  {dbError && <DatabaseFallback />}
   
   <!-- Categories Section -->
   <section class="py-16">

@@ -1,0 +1,27 @@
+---
+interface Props {
+  title?: string;
+  message?: string;
+  showHome?: boolean;
+}
+
+const {
+  title = 'Ein Fehler ist aufgetreten',
+  message = 'Bitte versuchen Sie es später noch einmal.',
+  showHome = true
+} = Astro.props;
+---
+
+<div class="min-h-[50vh] flex items-center justify-center p-5">
+  <div class="text-center max-w-lg">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">{title}</h1>
+    <p class="text-lg text-gray-600 mb-8">{message}</p>
+    
+    {showHome && (
+      <a href="/" class="inline-block bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+        <i class="fas fa-home mr-2"></i>
+        Zur Startseite
+      </a>
+    )}
+  </div>
+</div>

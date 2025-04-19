@@ -1,0 +1,20 @@
+---
+interface Props {
+  message?: string;
+}
+
+const { message = 'Die Datenbank ist derzeit nicht verfu00fcgbar. Wir zeigen Ihnen stattdessen einige statische Inhalte.' } = Astro.props;
+---
+
+<div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-4">
+  <div class="flex">
+    <div class="flex-shrink-0">
+      <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+    </div>
+    <div class="ml-3">
+      <p class="text-sm text-yellow-700">
+        {message}
+      </p>
+    </div>
+  </div>
+</div>

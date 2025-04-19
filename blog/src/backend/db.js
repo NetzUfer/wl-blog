@@ -3,17 +3,33 @@ import mysql from 'mysql2/promise';
 // Datenbankverbindung erstellen
 async function createConnection() {
   try {
+    // Increase timeout and add retry logic
     const connection = await mysql.createConnection({
-      host: process.env.DB_HOST || 'database-5017695371.ud-webspace.de',
-      user: process.env.DB_USER || 'dbu1921258',
-      password: process.env.DB_PASSWORD || 'Schirema05042025!',
-      database: process.env.DB_NAME || 'dbs14147259'
+      host: process.env.DB_HOST || 'localhost', // Default to localhost for development
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_NAME || 'blog_db',
+      connectTimeout: 30000, // 30 seconds timeout
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+      // Add these options for better stability
+      enableKeepAlive: true,
+      keepAliveInitialDelay: 10000 // 10 seconds
     });
     
     console.log('Datenbankverbindung hergestellt');
     return connection;
   } catch (error) {
     console.error('Fehler bei der Datenbankverbindung:', error);
+    // Log more detailed error information
+    if (error.code === 'ETIMEDOUT') {
+      console.error('Verbindungs-Timeout: Die Datenbank ist nicht erreichbar. Überprüfen Sie die Netzwerkverbindung und die Datenbankkonfiguration.');
+    } else if (error.code === 'ER_ACCESS_DENIED_ERROR') {
+      console.error('Zugriff verweigert: Überprüfen Sie Benutzername und Passwort.');
+    } else if (error.code === 'ECONNREFUSED') {
+      console.error('Verbindung abgelehnt: Der Datenbankserver ist nicht erreichbar oder läuft nicht.');
+    }
     throw error;
   }
 }
@@ -192,57 +208,6 @@ async function getPosts({ limit = 10, offset = 0, category = null, status = 'pub
     queryParams.push(limit, offset);
     
     const [posts] = await connection.execute(query, queryParams);
-    return posts;
-  } finally {
-    await connection.end();
-  }
-}
-
-// Einzelnen Beitrag abrufen
-async function getPostBySlug(slug) {
-  return executeQuery(async (connection) => {
-    const [posts] = await connection.execute(`
-      SELECT p.*, c.name as category_name, c.slug as category_slug, u.name as author_name
-      FROM posts p
-      LEFT JOIN categories c ON p.category_id = c.id
-      LEFT JOIN users u ON p.author_id = u.id
-      WHERE p.slug = ? AND p.status = 'published'
-      LIMIT 1
-    `, [slug]);
-    
-    return posts[0] || null;
-  });
-}
-
-// Kategorien abrufen
-async function getCategories() {
-  return executeQuery(async (connection) => {
-    const [categories] = await connection.execute(`
-      SELECT c.*, COUNT(p.id) as post_count
-      FROM categories c
-      LEFT JOIN posts p ON c.id = p.category_id AND p.status = 'published'
-      GROUP BY c.id
-      ORDER BY c.name
-    `);
-    
-    return categories;
-  });
-}
-
-// Exports
-export {
-  createConnection,
-  executeQuery,
-  initializeDatabase,
-  getPosts,
-  getPostBySlug,
-  getCategories
-};
-    
-    query += ' ORDER BY p.created_at DESC LIMIT ? OFFSET ?';
-    queryParams.push(limit, offset);
-    
-    const [posts] = await connection.execute(query, queryParams);
     
     // Tags für jeden Beitrag abrufen
     for (const post of posts) {
@@ -311,6 +276,21 @@ async function getPostBySlug(slug) {
   } finally {
     await connection.end();
   }
+}
+
+// Kategorien abrufen
+async function getCategories() {
+  return executeQuery(async (connection) => {
+    const [categories] = await connection.execute(`
+      SELECT c.*, COUNT(p.id) as post_count
+      FROM categories c
+      LEFT JOIN posts p ON c.id = p.category_id AND p.status = 'published'
+      GROUP BY c.id
+      ORDER BY c.name
+    `);
+    
+    return categories;
+  });
 }
 
 // Beitrag erstellen
@@ -499,27 +479,7 @@ async function deletePost(postId) {
   }
 }
 
-// Kategorien abrufen
-async function getCategories() {
-  const connection = await createConnection();
-  
-  try {
-    const [categories] = await connection.execute(`
-      SELECT c.*, COUNT(p.id) as post_count
-      FROM categories c
-      LEFT JOIN posts p ON c.id = p.category_id AND p.status = 'published'
-      GROUP BY c.id
-      ORDER BY c.name
-    `);
-    
-    return categories;
-  } catch (error) {
-    console.error('Fehler beim Abrufen der Kategorien:', error);
-    throw error;
-  } finally {
-    await connection.end();
-  }
-}
+// No exports here - moved to the end of the file
 
 // Kommentar hinzufügen
 async function addComment(postId, commentData) {
@@ -631,13 +591,15 @@ async function searchPosts(query) {
 }
 
 export {
-  initDatabase,
+  createConnection,
+  executeQuery,
+  initializeDatabase,
   getPosts,
   getPostBySlug,
+  getCategories,
   createPost,
   updatePost,
   deletePost,
-  getCategories,
   addComment,
   addSubscriber,
   authenticateUser,
