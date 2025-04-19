@@ -2,34 +2,55 @@ import mysql from 'mysql2/promise';
 
 // Datenbankverbindung erstellen
 async function createConnection() {
+  // Lese Umgebungsvariablen
+  const dbHost = process.env.DB_HOST || 'localhost';
+  const dbUser = process.env.DB_USER || 'root';
+  const dbPassword = process.env.DB_PASSWORD || '';
+  const dbName = process.env.DB_NAME || 'blog_db';
+  
+  console.log(`Verbindung zur Datenbank wird hergestellt: ${dbHost}/${dbName}`);
+  
+  // Konfiguration für Remote-Verbindungen optimieren
+  const config = {
+    host: dbHost,
+    user: dbUser,
+    password: dbPassword,
+    database: dbName,
+    connectTimeout: 60000, // 60 Sekunden Timeout für langsame Verbindungen
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 10000, // 10 Sekunden
+    // SSL-Optionen für sichere Verbindungen
+    ssl: dbHost.includes('ud-webspace.de') ? {
+      rejectUnauthorized: false // Bei Problemen mit SSL-Zertifikaten
+    } : undefined
+  };
+  
   try {
-    // Increase timeout and add retry logic
-    const connection = await mysql.createConnection({
-      host: process.env.DB_HOST || 'localhost', // Default to localhost for development
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || '',
-      database: process.env.DB_NAME || 'blog_db',
-      connectTimeout: 30000, // 30 seconds timeout
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-      // Add these options for better stability
-      enableKeepAlive: true,
-      keepAliveInitialDelay: 10000 // 10 seconds
-    });
-    
-    console.log('Datenbankverbindung hergestellt');
+    const connection = await mysql.createConnection(config);
+    console.log('Datenbankverbindung erfolgreich hergestellt');
     return connection;
   } catch (error) {
     console.error('Fehler bei der Datenbankverbindung:', error);
-    // Log more detailed error information
+    
+    // Detaillierte Fehlermeldungen
     if (error.code === 'ETIMEDOUT') {
-      console.error('Verbindungs-Timeout: Die Datenbank ist nicht erreichbar. Überprüfen Sie die Netzwerkverbindung und die Datenbankkonfiguration.');
+      console.error(`Verbindungs-Timeout: Die Datenbank ${dbHost} ist nicht erreichbar.`);
+      console.error('Mögliche Ursachen:');
+      console.error('1. Der Datenbankserver ist nicht online');
+      console.error('2. Ihre Internetverbindung ist instabil');
+      console.error('3. Die Firewall blockiert die Verbindung');
+      console.error('4. Der Hostname ist falsch geschrieben');
     } else if (error.code === 'ER_ACCESS_DENIED_ERROR') {
       console.error('Zugriff verweigert: Überprüfen Sie Benutzername und Passwort.');
     } else if (error.code === 'ECONNREFUSED') {
       console.error('Verbindung abgelehnt: Der Datenbankserver ist nicht erreichbar oder läuft nicht.');
+    } else if (error.code === 'ER_BAD_DB_ERROR') {
+      console.error(`Die Datenbank '${dbName}' existiert nicht auf dem Server.`);
     }
+    
     throw error;
   }
 }

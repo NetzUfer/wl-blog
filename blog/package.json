@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test-db": "node test-db-connection.js",
+    "test-remote-db": "node test-remote-db.js",
     "init-db": "node init-database.js"
   },
   "dependencies": {
