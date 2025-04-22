@@ -1,9 +1,9 @@
 <?php
 // Datenbankverbindungsparameter
-$host = 'localhost'; // Ändern Sie dies zu Ihrem MySQL-Host
-$user = 'username'; // Ändern Sie dies zu Ihrem MySQL-Benutzernamen
-$password = 'password'; // Ändern Sie dies zu Ihrem MySQL-Passwort
-$database = 'blog_db'; // Ändern Sie dies zu Ihrem Datenbanknamen
+$host = 'database-5017695371.ud-webspace.de'; // Ändern Sie dies zu Ihrem MySQL-Host
+$user = 'dbu1921258'; // Ändern Sie dies zu Ihrem MySQL-Benutzernamen
+$password = 'Schirema05042025!'; // Ändern Sie dies zu Ihrem MySQL-Passwort
+$database = 'dbs14147259'; // Ändern Sie dies zu Ihrem Datenbanknamen
 
 // Verbindung zur Datenbank herstellen
 try {
